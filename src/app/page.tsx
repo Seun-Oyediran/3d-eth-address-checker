@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/shared";
 import { ArrowDown, CanvasSvg } from "./components/svg";
 import { useRef, useState } from "react";
-import { SoftShadows } from "@react-three/drei";
+import { CameraControls, SoftShadows } from "@react-three/drei";
 import {
   failureGestures,
   successGestures,
@@ -11,6 +11,7 @@ import {
 } from "@/utils/static";
 import { getRandomElementFromArray } from "@/utils";
 import { toast } from "react-toastify";
+import * as THREE from "three";
 
 function isValidEthereumAddress(address?: string): boolean {
   if (!address) return false;
@@ -24,6 +25,7 @@ export default function Home() {
     getRandomElementFromArray(welcomeGestures)
   );
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const cameraRef = useRef<CameraControls | null>(null);
 
   const handleNext = () => {
     const isValid = isValidEthereumAddress(inputRef.current?.value);
@@ -86,7 +88,48 @@ export default function Home() {
                 far: 1000,
                 position: [0, 0, 2.5],
               }}
+              onMouseLeave={() => {
+                const position = cameraRef.current?.getPosition(
+                  new THREE.Vector3()
+                );
+                if (cameraRef.current === null) return;
+                cameraRef.current.setLookAt(
+                  position!.x,
+                  position!.y,
+                  2.5,
+                  0,
+                  0,
+                  0,
+
+                  true
+                );
+              }}
+              onMouseMove={(e) => {
+                // console.log(cameraRef.current);
+                const position = cameraRef.current?.getPosition(
+                  new THREE.Vector3()
+                );
+
+                const mouseX = e.clientX / window.innerWidth - 0.26;
+                const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+
+                if (cameraRef.current === null) return;
+                cameraRef.current.setLookAt(
+                  position!.x,
+                  position!.y,
+                  2.5 + mouseY * 0.5,
+                  mouseX * 1,
+                  mouseY * 0.5,
+                  0,
+                  true
+                );
+
+                // cameraRef.current.position.y = mouseY * 5;
+              }}
+
+              // ref={canvasRef}
             >
+              <CameraControls enabled={!false} ref={cameraRef} />
               <color args={[0xa397e7]} attach="background" />
               <fog attach="fog" args={[0xa397e7, 20, 100]} />
               {/* <SoftShadows size={25} /> */}
