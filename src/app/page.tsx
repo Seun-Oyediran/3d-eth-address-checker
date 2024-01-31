@@ -28,14 +28,14 @@ export default function Home() {
   const handleNext = () => {
     const isValid = isValidEthereumAddress(inputRef.current?.value);
     if (isValid) {
-      setActiveAction(getRandomElementFromArray(successGestures));
+      setActiveAction(getRandomElementFromArray(successGestures, activeAction));
       toast.success("🦄 Valid Address!", {
         position: "top-right",
         autoClose: 3000,
         theme: "colored",
       });
     } else {
-      setActiveAction(getRandomElementFromArray(failureGestures));
+      setActiveAction(getRandomElementFromArray(failureGestures, activeAction));
       toast.error("Invalid Address!", {
         position: "top-right",
         autoClose: 3000,
