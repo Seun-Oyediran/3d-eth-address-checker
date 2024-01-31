@@ -1,0 +1,52 @@
+/* md */
+@media (max-width: 767px) {
+  .app__main__wrapper {
+    height: unset;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .app__form__flex {
+    height: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .app__canvas__container__relative,
+  .app__form__content {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app__canvas__container__relative {
+    height: 327px;
+    max-width: 258px;
+    margin-bottom: 3rem;
+  }
+
+  .welcome__text__con {
+    justify-content: center;
+  }
+
+  .app__form__title,
+  .app__input__con {
+    margin-top: 24px;
+  }
+
+  .app__form__title h3 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .app__form__title p {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .app__button__con {
+    margin-top: 16px;
+  }
+}
