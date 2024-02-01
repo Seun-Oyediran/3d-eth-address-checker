@@ -24,3 +24,5 @@ export const failureGestures = [
 ];
 
 export const welcomeGestures = ["waving", "wavingGesture"];
+
+export const textingGestures = ["textingWhileStanding", "angry"];

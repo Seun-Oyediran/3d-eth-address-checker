@@ -1,21 +1,15 @@
 "use client";
-import { useProgress } from "@react-three/drei";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+
+import React, { Fragment } from "react";
 import { Lights } from ".";
 import { AjCharacter } from "../models";
 
 interface IProps {
-  handleProgress: (num: number) => void;
   activeAction: string;
 }
 
 const Experience = (props: IProps) => {
-  const { handleProgress, activeAction } = props;
-  const { progress } = useProgress();
-
-  useEffect(() => {
-    handleProgress(progress);
-  }, [progress]);
+  const { activeAction } = props;
 
   return (
     <Fragment>

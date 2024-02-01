@@ -1,12 +1,13 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/shared";
-import { ArrowDown, CanvasSvg } from "./components/svg";
+import { ArrowDown } from "./components/svg";
 import { useRef, useState } from "react";
-import { CameraControls, SoftShadows } from "@react-three/drei";
+import { CameraControls } from "@react-three/drei";
 import {
   failureGestures,
   successGestures,
+  textingGestures,
   welcomeGestures,
 } from "@/utils/static";
 import { getRandomElementFromArray } from "@/utils";
@@ -46,30 +47,24 @@ export default function Home() {
     }
   };
 
+  const handleLeave = () => {
+    const position = cameraRef.current?.getPosition(new THREE.Vector3());
+    if (cameraRef.current === null) return;
+    cameraRef.current.setLookAt(
+      position!.x,
+      position!.y,
+      2.5,
+      0,
+      0,
+      0,
+
+      true
+    );
+  };
+
   return (
     <main className="app__main__wrapper">
       <div className="app__form__flex">
-        {/* <div>
-          <CanvasSvg>
-          <div className="canvas__container">
-            <Canvas
-              shadows
-              id="c"
-              className="canvas"
-              camera={{
-                fov: 60,
-                near: 0.1,
-                far: 1000,
-                position: [0, 0, 2.5],
-              }}
-            >
-              <color args={[0xffffff * Math.random()]} attach="background" />
-
-              <Experience />
-            </Canvas>
-          </div>
-          </CanvasSvg>
-        </div> */}
         <div className="app__canvas__container__relative">
           {/* eslint-disable-next-line */}
           <img
@@ -88,24 +83,8 @@ export default function Home() {
                 far: 1000,
                 position: [0, 0, 2.5],
               }}
-              onMouseLeave={() => {
-                const position = cameraRef.current?.getPosition(
-                  new THREE.Vector3()
-                );
-                if (cameraRef.current === null) return;
-                cameraRef.current.setLookAt(
-                  position!.x,
-                  position!.y,
-                  2.5,
-                  0,
-                  0,
-                  0,
-
-                  true
-                );
-              }}
+              onMouseLeave={handleLeave}
               onMouseMove={(e) => {
-                // console.log(cameraRef.current);
                 const position = cameraRef.current?.getPosition(
                   new THREE.Vector3()
                 );
@@ -123,20 +102,19 @@ export default function Home() {
                   0,
                   true
                 );
-
-                // cameraRef.current.position.y = mouseY * 5;
               }}
-
-              // ref={canvasRef}
             >
-              <CameraControls enabled={!false} ref={cameraRef} />
+              <CameraControls
+                ref={cameraRef}
+                maxDistance={2.5}
+                minDistance={2.5}
+                maxPolarAngle={Math.PI / 2}
+                minPolarAngle={Math.PI / 8}
+              />
               <color args={[0xa397e7]} attach="background" />
               <fog attach="fog" args={[0xa397e7, 20, 100]} />
-              {/* <SoftShadows size={25} /> */}
-              <Experience
-                handleProgress={(progress: number) => {}}
-                activeAction={activeAction}
-              />
+
+              <Experience activeAction={activeAction} />
             </Canvas>
           </div>
         </div>
@@ -153,7 +131,20 @@ export default function Home() {
           <div className="app__input__con">
             <div className="app__input__relative">
               <div className="app__flex__con">
-                <input type="text" placeholder="" required ref={inputRef} />
+                <input
+                  type="text"
+                  placeholder=""
+                  required
+                  ref={inputRef}
+                  onFocus={() => {
+                    setActiveAction(
+                      getRandomElementFromArray(textingGestures, activeAction)
+                    );
+                  }}
+                  onBlur={() => {
+                    setActiveAction("idle");
+                  }}
+                />
                 <p className="app__input__placeholder">Eth Wallet Address</p>
               </div>
             </div>
