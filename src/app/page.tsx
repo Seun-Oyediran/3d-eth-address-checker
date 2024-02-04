@@ -110,6 +110,17 @@ export default function Home() {
                 minDistance={2.5}
                 maxPolarAngle={Math.PI / 2}
                 minPolarAngle={Math.PI / 8}
+                touches={{
+                  one: 0,
+                  three: 0,
+                  two: 0,
+                }}
+                mouseButtons={{
+                  left: 0,
+                  middle: 0,
+                  right: 0,
+                  wheel: 0,
+                }}
               />
               <color args={[0xa397e7]} attach="background" />
               <fog attach="fog" args={[0xa397e7, 20, 100]} />
